@@ -1,0 +1,9 @@
+nextcord
+openai
+Pillow>=8.1.1
+supabase-py
+pytz
+decouple
+python-dotenv
+configparser
+rich

@@ -1,0 +1,16 @@
+.env
+
+*.pyc
+*.pyo
+*.pyd
+
+__pycache__/
+
+# If you have a virtualenv, ignore it
+venv/
+env/
+.venv/
+
+
+custom/database/_data.json
+

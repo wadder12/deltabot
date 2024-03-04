@@ -24,7 +24,7 @@ class MediaUploadCog(commands.Cog):
 
     def __init__(self, bot):
         self.bot = bot
-        with open('config/emojis.yaml', 'r') as file:
+        with open('settings/config/emojis.yaml', 'r') as file:
             self.emojis = yaml.safe_load(file).get('emojis', {})
         self.supabase_url = os.getenv('SUPABASE_URL')
         self.supabase_key = os.getenv('SUPABASE_KEY')

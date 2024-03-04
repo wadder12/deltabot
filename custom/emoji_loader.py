@@ -1,6 +1,6 @@
 import yaml
 
-def load_emojis(path='config/emojis.yaml'):
+def load_emojis(path='settings/config/emojis.yaml'):
     """Load emojis from a YAML file."""
     try:
         with open(path, 'r') as file:

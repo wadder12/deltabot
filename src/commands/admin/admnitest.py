@@ -5,6 +5,7 @@ class Admin(commands.Cog):
         self.bot = bot
 
     @commands.command()
+    @commands.has_permissions(ban_members=True)
     async def kick(self, ctx, member: commands.MemberConverter):
         await ctx.send(f'Kicked {member.name}')
 

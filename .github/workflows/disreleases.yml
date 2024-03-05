@@ -1,0 +1,26 @@
+name: Release Announcements
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  discordNotification:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Discord notification
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_URL }}
+        run: |
+          curl -H "Content-Type: application/json" \
+               -X POST \
+               -d '{
+                 "content": null,
+                 "embeds": [{
+                   "title": "🎉 New Release: ${{ github.event.release.tag_name }}",
+                   "url": "${{ github.event.release.html_url }}",
+                   "description": "A new release is available now! Check out the latest version **${{ github.event.release.tag_name }}** of ${{ github.repository }}.\n\n${{ github.event.release.body }}",
+                   "color": 5814783
+                 }]
+               }' \
+               $DISCORD_WEBHOOK

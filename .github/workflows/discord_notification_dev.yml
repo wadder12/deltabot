@@ -1,0 +1,58 @@
+name: Discord Notification for Dev Branch
+
+on:
+  push:
+    branches:
+      - dev  # Listen for pushes to the dev branch
+
+jobs:
+  notification:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+      
+    - name: Prepare timestamp
+      id: date
+      run: echo "::set-output name=timestamp::$(date -u +'%A, %B %d, %Y %H:%M:%S UTC' --date='${{ github.event.head_commit.timestamp }}')"
+
+    - name: Send Discord Notification for Dev Branch
+      env:
+        DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+      run: |
+        curl -H "Content-Type: application/json" \
+             -X POST \
+             -d '{
+               "embeds": [{
+                 "title": "👻 Boo! Another Commit Spooks the Dev Branch!",
+                 "description": "**Brace Yourselves!**\nA wild commit has appeared, possibly armed with new features or haunted by unknown bugs! Will it survive the night, or will it vanish into the depths of `git revert`? Stay tuned!\n```Commit Message: ${{ github.event.head_commit.message }}```\n[View Commit](https://github.com/${{ github.repository }}/commit/${{ github.sha }})",
+                 "color": 16776960,  # Bright yellow for a playful warning vibe
+                 "author": {
+                   "name": "${{ github.actor }}",
+                   "url": "https://github.com/${{ github.actor }}",
+                   "icon_url": "https://github.com/${{ github.actor }}.png?size=32"
+                 },
+                 "fields": [
+                   {
+                     "name": "Repository",
+                     "value": "[${{ github.repository }}](https://github.com/${{ github.repository }})",
+                     "inline": true
+                   },
+                   {
+                     "name": "Branch of Mystery",
+                     "value": "`dev` :ghost:",
+                     "inline": true
+                   },
+                   {
+                     "name": "Commit Conjurer",
+                     "value": "`${{ github.actor }}`",
+                     "inline": true
+                   }
+                 ],
+                 "footer": {
+                   "text": "Spooky Timestamp: ${{ steps.date.outputs.timestamp }}"
+                 }
+               }]
+             }' \
+             $DISCORD_WEBHOOK_URL

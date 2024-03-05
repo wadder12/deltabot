@@ -18,5 +18,29 @@ jobs:
         DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
       run: |
         curl -H "Content-Type: application/json" \
-             -d "{\"content\": \"🚀 New commit pushed to ${{ github.ref }} by ${{ github.actor }}!\"}" \
+             -X POST \
+             -d '{
+               "embeds": [{
+                 "title": "New Commit Pushed!",
+                 "description": "A new commit has been pushed to the repository.",
+                 "url": "https://github.com/${{ github.repository }}/commit/${{ github.sha }}",
+                 "color": 5814783,
+                 "fields": [
+                   {
+                     "name": "Branch",
+                     "value": "`${{ github.ref_name }}`",
+                     "inline": true
+                   },
+                   {
+                     "name": "Commit by",
+                     "value": "`${{ github.actor }}`",
+                     "inline": true
+                   }
+                 ],
+                 "footer": {
+                   "text": "GitHub Actions"
+                 },
+                 "timestamp": "${{ github.event.head_commit.timestamp }}"
+               }]
+             }' \
              $DISCORD_WEBHOOK_URL

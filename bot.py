@@ -1,9 +1,11 @@
 import os
-from nextcord.ext import commands
-from nextcord import Intents
-from settings.cogs import load_cogs_async
-from custom.startup.bot_startup import custom_startup
+
 from dotenv import load_dotenv
+from nextcord import Intents
+from nextcord.ext import commands
+
+from custom.startup.bot_startup import custom_startup
+from settings.cogs import load_cogs_async
 
 load_dotenv()
 

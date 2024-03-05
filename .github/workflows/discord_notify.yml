@@ -3,10 +3,10 @@ name: Discord Notification
 on:
   push:
     branches:
-      - main  # or any other branch you want to monitor
+      - main  
 
 jobs:
-  build:
+  notification:
     runs-on: ubuntu-latest
 
     steps:
@@ -21,26 +21,40 @@ jobs:
              -X POST \
              -d '{
                "embeds": [{
-                 "title": "New Commit Pushed!",
-                 "description": "A new commit has been pushed to the repository.",
-                 "url": "https://github.com/${{ github.repository }}/commit/${{ github.sha }}",
-                 "color": 5814783,
+                 "title": "🚀 New Commit Pushed!",
+                 "description": "**Commit Details:**\n```Commit Message: ${{ github.event.head_commit.message }}```\n[View Commit](https://github.com/${{ github.repository }}/commit/${{ github.sha }})",
+                 "color": 1127128,
+                 "author": {
+                   "name": "${{ github.actor }}",
+                   "url": "https://github.com/${{ github.actor }}",
+                   "icon_url": "https://github.com/${{ github.actor }}.png?size=32"
+                 },
+                 "thumbnail": {
+                   "url": "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png"
+                 },
                  "fields": [
+                   {
+                     "name": "Repository",
+                     "value": "[${{ github.repository }}](https://github.com/${{ github.repository }})",
+                     "inline": true
+                   },
                    {
                      "name": "Branch",
                      "value": "`${{ github.ref_name }}`",
                      "inline": true
                    },
                    {
-                     "name": "Commit by",
+                     "name": "Action Triggered By",
                      "value": "`${{ github.actor }}`",
                      "inline": true
                    }
                  ],
-                 "footer": {
-                   "text": "GitHub Actions"
+                 "image": {
+                   "url": "https://cdn.discordapp.com/attachments/1206459888159694908/1214395561751617588/D-2.png?ex=65f8f500&is=65e68000&hm=184db999df30cd1a67ff42863fc992c11c868614276b10803b9f682773d088a5&"  
                  },
-                 "timestamp": "${{ github.event.head_commit.timestamp }}"
+                 "footer": {
+                   "text": "Timestamp: ${{ github.event.head_commit.timestamp }}"
+                 }
                }]
              }' \
              $DISCORD_WEBHOOK_URL

@@ -1,0 +1,22 @@
+name: Discord Notification
+
+on:
+  push:
+    branches:
+      - main  # or any other branch you want to monitor
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Send Discord Notification
+      env:
+        DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+      run: |
+        curl -H "Content-Type: application/json" \
+             -d "{\"content\": \"🚀 New commit pushed to ${{ github.ref }} by ${{ github.actor }}!\"}" \
+             $DISCORD_WEBHOOK_URL

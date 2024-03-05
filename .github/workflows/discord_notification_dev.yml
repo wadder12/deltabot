@@ -19,7 +19,7 @@ jobs:
 
     - name: Send Discord Notification for Dev Branch
       env:
-        DEV_DISCORD: ${{ secrets.DEV_DISCORD }}
+        DISCORD_WEBHOOK_URL: ${{ secrets.DEV_DISCORD }} # Ensure this matches your GitHub secret name
       run: |
         curl -H "Content-Type: application/json" \
              -X POST \

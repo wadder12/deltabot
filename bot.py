@@ -27,7 +27,6 @@ if __name__ == "__main__":
         bot.run(discord_token)
     else:
         print("Error: DISCORD_TOKEN environment variable is not set.")
-
     """ hello
     - this is the first file for your bot - if you want to change be free - but make sure you don't break anything (its simple)
     """

@@ -12,6 +12,10 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
+      
+    - name: Prepare timestamp
+      id: date
+      run: echo "::set-output name=timestamp::$(date -u +'%A, %B %d, %Y %H:%M:%S UTC' --date='${{ github.event.head_commit.timestamp }}')"
 
     - name: Send Discord Notification
       env:
@@ -49,11 +53,8 @@ jobs:
                      "inline": true
                    }
                  ],
-                 "image": {
-                   "url": "https://cdn.discordapp.com/attachments/1206459888159694908/1214395561751617588/D-2.png?ex=65f8f500&is=65e68000&hm=184db999df30cd1a67ff42863fc992c11c868614276b10803b9f682773d088a5&"  
-                 },
                  "footer": {
-                   "text": "Timestamp: ${{ github.event.head_commit.timestamp }}"
+                   "text": "Timestamp: ${{ steps.date.outputs.timestamp }}"
                  }
                }]
              }' \
